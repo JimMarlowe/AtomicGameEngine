@@ -49,7 +49,8 @@ public:
 
     bool PlayProject(String addArgs = "", bool debug = false);
     bool IsPlayerEnabled();
-
+    void PlayerJSDebug();
+        
 private:
 
     void HandleIPCWorkerStarted(StringHash eventType, VariantMap& eventData);

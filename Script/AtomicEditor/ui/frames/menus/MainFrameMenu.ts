@@ -84,6 +84,11 @@ class MainFrameMenu extends Atomic.ScriptObject {
                 return true;
             }
 
+            if (refid == "edit js debug") {
+                EditorUI.getShortcuts().invokePlayerJSDebug();
+                return true;
+            }
+
             if (refid == "edit play debug") {
                 EditorUI.getShortcuts().invokePlayOrStopPlayer(true);
                 return true;
@@ -346,6 +351,7 @@ var editItems = {
     "Play": ["edit play", StringID.ShortcutPlay],
     "Pause/Resume": ["edit pause", StringID.ShortcutPause],
     "Step": ["edit step", StringID.ShortcutStep],
+    "Debug (JS Project)": ["edit js debug", StringID.ShortcutJSDebug],
     "Debug (C# Project)": ["edit play debug", StringID.ShortcutPlayDebug],
     "-6": null,
     "Snap Settings": ["edit snap settings"]

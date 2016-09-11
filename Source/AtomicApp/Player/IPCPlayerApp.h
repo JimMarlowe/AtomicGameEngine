@@ -47,7 +47,7 @@ namespace Atomic
 
         virtual void ProcessArguments();
 
-        void RECONNECT();
+        void Reconnect();
  
     protected:
 
@@ -61,6 +61,7 @@ namespace Atomic
         void HandleUpdatesPausedResumed(StringHash eventType, VariantMap& eventData);
         void HandleQuit(StringHash eventType, VariantMap& eventData);
         void HandleExitRequest(StringHash eventType, VariantMap& eventData);
+        void HandleJSDebugRequest(StringHash eventType, VariantMap& eventData);
 
         /// true if we're launched as a subprocess, otherwise top level process (generally for debugging)
         bool subprocess_;

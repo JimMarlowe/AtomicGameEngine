@@ -266,4 +266,11 @@ bool EditorMode::IsPlayerEnabled()
     return playerEnabled_;
 }
 
+void EditorMode::PlayerJSDebug()
+{
+    if (!playerBroker_) return;
+    VariantMap noEventData;
+    playerBroker_->PostMessage( E_JSDEBUGGER, noEventData);
+}
+
 }

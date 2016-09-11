@@ -74,6 +74,10 @@ class Shortcuts extends Atomic.ScriptObject {
         }
     }
 
+    invokePlayerJSDebug() {
+        Atomic.editorMode.playerJSDebug();
+    }
+
     invokeFormatCode() {
 
         var editor = EditorUI.getCurrentResourceEditor();
@@ -204,6 +208,9 @@ class Shortcuts extends Atomic.ScriptObject {
             }
             else if (ev.key == Atomic.KEY_P) {
                 this.invokePlayOrStopPlayer();
+            }
+            else if (ev.key == Atomic.KEY_J) {
+                this.invokePlayerJSDebug ();
             } else if (ev.key == Atomic.KEY_B) {
                 if (ev.qualifiers & Atomic.QUAL_SHIFT) {
                     EditorUI.getModelOps().showBuildSettings();
