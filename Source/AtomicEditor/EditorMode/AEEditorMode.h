@@ -50,7 +50,11 @@ public:
     bool PlayProject(String addArgs = "", bool debug = false);
     bool IsPlayerEnabled();
     void PlayerJSDebug();
-        
+
+protected:        
+
+    void StartLocalDebugger();
+    
 private:
 
     void HandleIPCWorkerStarted(StringHash eventType, VariantMap& eventData);

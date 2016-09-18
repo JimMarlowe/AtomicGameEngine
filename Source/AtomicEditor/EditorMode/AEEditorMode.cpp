@@ -271,6 +271,64 @@ void EditorMode::PlayerJSDebug()
     if (!playerBroker_) return;
     VariantMap noEventData;
     playerBroker_->PostMessage( E_JSDEBUGGER, noEventData);
+    
+    StartLocalDebugger();
 }
+
+void EditorMode::StartLocalDebugger()
+{
+    FileSystem* fileSystem = GetSubsystem<FileSystem>();
+    ToolSystem* tsystem = GetSubsystem<ToolSystem>();
+    Project* project = tsystem->GetProject();
+
+    if (!project) 
+    {
+        ATOMIC_LOGINFO("StartLocalDebugger the project does not exist");
+        return;
+    }
+    
+    String pdir = fileSystem->GetProgramDir();
+    String dpath = pdir + "Resources/ToolData/Deployment/debugger";
+    
+    // see if the local debugger is installed, if not bail.
+    if ( !fileSystem->DirExists( dpath ) )
+    {
+       ATOMIC_LOGINFOF("StartLocalDebugger %s does not exist", dpath.CString());
+       return;
+    }
+
+    fileSystem->SetExecuteConsoleCommands(true);
+    
+    // get the project, paths
+    Vector<String> paths;
+    
+    // paths to the projects .js paths
+    if ( fileSystem->DirExists( project->GetProjectPath() + "Resources" ) )
+        paths.Push(project->GetProjectPath() + "Resources" );
+    if ( fileSystem->DirExists( project->GetProjectPath() + "Resources/Scripts" ) )
+        paths.Push(project->GetProjectPath() + "Resources/Scripts" );
+    if ( fileSystem->DirExists( project->GetProjectPath() + "Resources/Modules" ) )
+        paths.Push(project->GetProjectPath() + "Resources/Modules" );
+    if ( fileSystem->DirExists( project->GetProjectPath() + "Resources/Components" ) )
+        paths.Push(project->GetProjectPath() + "Resources/Components" );
+
+    // platform-specific path delimiter `;` for Windows, `:` for POSIX
+    String resourcePaths;
+    resourcePaths.Join(paths, ":");
+   
+    // see if we have a node available -- hardcode for now
+    String nodeExec = "/usr/bin/nodejs";
+    
+    // go there and do some damage
+    if ( fileSystem->SetCurrentDir(dpath) )
+    {
+        String execString = nodeExec + " duk_debug.js --source-dirs=" + resourcePaths;
+        unsigned got = fileSystem->SystemCommandAsync( execString );
+        ATOMIC_LOGINFOF("StartLocalDebugger with %s = %u", execString.CString(), got );
+    }
+
+}
+
+
 
 }
